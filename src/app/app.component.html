@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-        <div id="user-data">
+      <form (ngSubmit)="onSubmit()" #form="ngForm">
+        <div id="user-data" ngModelGroup="userData">
           <div class="form-group">
             <label for="username" class="form-label">Username</label>
             <input
@@ -11,6 +11,7 @@
               class="form-control"
               ngModel
               name="username"
+              required
             />
           </div>
           <br />
@@ -27,20 +28,44 @@
               class="form-control"
               ngModel
               name="email"
+              required
+              email
+              #email="ngModel"
             />
+            <span *ngIf="!email.valid && email.touched">
+              Please enter a valid value!
+            </span>
           </div>
         </div>
         <br />
         <div class="form-group">
           <label for="secret" class="form-label">Secret Questions</label>
-          <select id="secret" class="form-select" ngModel name="secret">
+          <select
+            id="secret"
+            class="form-select"
+            [ngModel]="defaultQuestion"
+            name="secret"
+          >
             <option value="pet">Your first Pet?</option>
             <option value="teacher">Your first teacher?</option>
           </select>
         </div>
         <br />
+        <div class="form-group">
+          <textarea
+            name="questionAnswer"
+            class="form-control"
+            rows="3"
+            [(ngModel)]="answer"
+          ></textarea>
+        </div>
         <br />
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <p>Your reply: {{ answer }}</p>
+        <br />
+        <br />
+        <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+          Submit
+        </button>
       </form>
     </div>
   </div>
